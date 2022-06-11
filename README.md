@@ -1,0 +1,1 @@
+## TCC: Arquitetura de Big Data para suporte à tomada de decisão: utilizando como caso de uso a base de dados pública do Covid-19
