@@ -23,7 +23,7 @@ def extract(url: str):
 
 	headers = {
 		"X-RapidAPI-Host": "vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com",
-		"X-RapidAPI-Key": "7ddeaba71fmsh7a142fabe12b631p158bd6jsnce5c1d21727d"
+		"X-RapidAPI-Key": "d0f47450b4msh57ad9023ad21c5ep197e65jsnc240663b5ea5"
 	}
 
 	print(f'--> Extracting data from: {url}')
@@ -41,17 +41,17 @@ def transform(data_raw: bytes) -> DataFrame:
 	dataframe['ingestion_timestamp'] = datetime.now()
 
 	dataframe_casted: DataFrame = dataframe.astype({
-		'id': 'string',
-		'symbol': 'string',
-		'Country': 'string',
-		'Continent': 'string',
-		'date': 'datetime64[ns]',
-		'total_cases': 'int64',
-		'new_cases': 'int64',
-		'total_deaths': 'int64',
-		'new_deaths': 'int64',
-		'total_tests': 'int64',
-		'new_tests': 'int64',
+		'developerResearcher': 'string',
+		'trimedName': 'string',
+		'category': 'string',
+		'trimedCategory': 'string',
+		'phase': 'string',
+		'nextSteps': 'string',
+		'description': 'string',
+		'funder': 'string',
+		'FDAApproved': 'string',
+		'lastUpdated': 'datetime64[ns]',
+		'ingestion_timestamp': 'datetime64[ns]',
 	})
 
 	dataframe_casted: DataFrame = camel_to_snake_columns(dataframe_casted)
@@ -81,11 +81,10 @@ def load_on_s3(dataframe: DataFrame, path: str):
 
 
 def lambda_handler(event=None, context=None):
-	url = "https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/covid-ovid-data/"
+	url = "https://vaccovid-coronavirus-vaccine-and-treatment-tracker.p.rapidapi.com/api/vaccines/get-all-treatment"
 
 	data_raw = extract(url)
 
 	dataframe_transformed = transform(data_raw)
 
-	load_on_s3(dataframe_transformed, 's3://datalake-for-covid-anhembi/processed_data/covid-ovid-data/')
-
+	load_on_s3(dataframe_transformed, 's3://datalake-for-covid-anhembi/processed_data/vaccines/get-all-treatment"')
